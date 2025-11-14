@@ -126,8 +126,29 @@ Resources:
           FromPort: 27017
           ToPort: 27017
           SourceSecurityGroupId: !Ref ElasticBeanstalkSecurityGroup
+        - IpProtocol: tcp
+          FromPort: 27017
+          ToPort: 27017
+          SourceSecurityGroupId: !GetAtt FDPSElasticBeanstalkEnvironment.EnvironmentSecurityGroup
+        - IpProtocol: tcp
+          FromPort: 27017
+          ToPort: 27017
+          SourceSecurityGroupId: !GetAtt STDDSElasticBeanstalkEnvironment.EnvironmentSecurityGroup
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 27017
+          ToPort: 27017
+          DestinationSecurityGroupId: !Ref ElasticBeanstalkSecurityGroup
+        - IpProtocol: tcp
+          FromPort: 27017
+          ToPort: 27017
+          DestinationSecurityGroupId: !GetAtt FDPSElasticBeanstalkEnvironment.EnvironmentSecurityGroup
+        - IpProtocol: tcp
+          FromPort: 27017
+          ToPort: 27017
+          DestinationSecurityGroupId: !GetAtt STDDSElasticBeanstalkEnvironment.EnvironmentSecurityGroup
 
-  # DocumentDB Serverless Cluster
+  # DocumentDB Cluster
   DocumentDBCluster:
     Type: AWS::DocDB::DBCluster
     Properties:
@@ -142,9 +163,25 @@ Resources:
       BackupRetentionPeriod: 7
       PreferredBackupWindow: "03:00-04:00"
       PreferredMaintenanceWindow: "sun:04:00-sun:05:00"
-      ServerlessV2ScalingConfiguration:
-        MinCapacity: 0.5
-        MaxCapacity: 1
+
+  # DocumentDB Instances
+  DocumentDBInstance1:
+    Type: AWS::DocDB::DBInstance
+    Properties:
+      DBClusterIdentifier: !Ref DocumentDBCluster
+      DBInstanceClass: db.t3.medium
+      
+  DocumentDBInstance2:
+    Type: AWS::DocDB::DBInstance
+    Properties:
+      DBClusterIdentifier: !Ref DocumentDBCluster
+      DBInstanceClass: db.t3.medium
+      
+  DocumentDBInstance3:
+    Type: AWS::DocDB::DBInstance
+    Properties:
+      DBClusterIdentifier: !Ref DocumentDBCluster
+      DBInstanceClass: db.t3.medium
 
   # Elastic Beanstalk Application
   ElasticBeanstalkApplication:
