@@ -386,6 +386,9 @@ Resources:
       SolutionStackName: "64bit Amazon Linux 2023 v4.7.1 running Corretto 25"
       VersionLabel: !Ref ElasticBeanstalkApplicationVersion
       OptionSettings:
+        - Namespace: aws:elasticbeanstalk:environment
+          OptionName: EnvironmentType
+          Value: SingleInstance
         - Namespace: aws:autoscaling:launchconfiguration
           OptionName: IamInstanceProfile
           Value: !Ref ElasticBeanstalkInstanceProfile
@@ -423,6 +426,9 @@ Resources:
       SolutionStackName: "64bit Amazon Linux 2023 v4.7.1 running Corretto 25"
       VersionLabel: !Ref STDDSElasticBeanstalkApplicationVersion
       OptionSettings:
+        - Namespace: aws:elasticbeanstalk:environment
+          OptionName: EnvironmentType
+          Value: SingleInstance
         - Namespace: aws:autoscaling:launchconfiguration
           OptionName: IamInstanceProfile
           Value: !Ref ElasticBeanstalkInstanceProfile
