@@ -1,0 +1,4 @@
+*.pem
+aws-command*
+nextSteps*
+.DS_Store

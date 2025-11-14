@@ -1,0 +1,1 @@
+This repo will include CFs needed to spin up AWS instance for RIV25 to be used in AWS Workshop Studio
