@@ -126,28 +126,6 @@ Resources:
           FromPort: 27017
           ToPort: 27017
           SourceSecurityGroupId: !Ref ElasticBeanstalkSecurityGroup
-        - IpProtocol: tcp
-          FromPort: 27017
-          ToPort: 27017
-          SourceSecurityGroupId: !GetAtt FDPSElasticBeanstalkEnvironment.EnvironmentSecurityGroup
-        - IpProtocol: tcp
-          FromPort: 27017
-          ToPort: 27017
-          SourceSecurityGroupId: !GetAtt STDDSElasticBeanstalkEnvironment.EnvironmentSecurityGroup
-      SecurityGroupEgress:
-        - IpProtocol: tcp
-          FromPort: 27017
-          ToPort: 27017
-          DestinationSecurityGroupId: !Ref ElasticBeanstalkSecurityGroup
-        - IpProtocol: tcp
-          FromPort: 27017
-          ToPort: 27017
-          DestinationSecurityGroupId: !GetAtt FDPSElasticBeanstalkEnvironment.EnvironmentSecurityGroup
-        - IpProtocol: tcp
-          FromPort: 27017
-          ToPort: 27017
-          DestinationSecurityGroupId: !GetAtt STDDSElasticBeanstalkEnvironment.EnvironmentSecurityGroup
-
   # DocumentDB Cluster
   DocumentDBCluster:
     Type: AWS::DocDB::DBCluster
@@ -319,8 +297,13 @@ Resources:
   ElasticBeanstalkSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Security group for Elastic Beanstalk
+      GroupDescription: Security group for Elastic Beanstalk environments
       VpcId: !Ref VpcId
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 27017
+          ToPort: 27017
+          DestinationSecurityGroupId: !Ref DocumentDBSecurityGroup
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 80
